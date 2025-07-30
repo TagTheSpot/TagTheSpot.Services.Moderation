@@ -1,0 +1,21 @@
+services:
+  tagthespot-services-moderation-webapi:
+    image: ${DOCKER_REGISTRY-}tagthespotservicesmoderationwebapi
+    build:
+      context: .
+      dockerfile: TagTheSpot.Services.Moderation.WebAPI/Dockerfile
+
+  tagthespot-services-moderation-database:
+    container_name: tagthespot.services.moderation.database
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=tagthespot.services.moderation
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5434:5432"
+    volumes:
+      - tagthespot_services_moderation_postgresdb_data:/var/lib/postgresql/data
+
+volumes:
+  tagthespot_services_moderation_postgresdb_data:
