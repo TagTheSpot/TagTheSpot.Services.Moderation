@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TagTheSpot.Services.Moderation.Domain.Submissions;
 
 namespace TagTheSpot.Services.Moderation.Infrastructure.Persistence
 {
@@ -8,6 +9,8 @@ namespace TagTheSpot.Services.Moderation.Infrastructure.Persistence
             DbContextOptions<ApplicationDbContext> options)
             : base(options)
         { }
+
+        public DbSet<Submission> Submissions { get; init; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
