@@ -5,6 +5,7 @@ using TagTheSpot.Services.Moderation.Infrastructure.Extensions;
 using TagTheSpot.Services.Moderation.Infrastructure.Options;
 using TagTheSpot.Services.Moderation.Infrastructure.Persistence;
 using TagTheSpot.Services.Moderation.Infrastructure.Persistence.Options;
+using TagTheSpot.Services.Moderation.Infrastructure.Persistence.Repositories;
 using TagTheSpot.Services.Moderation.WebAPI.Extensions;
 using TagTheSpot.Services.Moderation.WebAPI.Factories;
 using TagTheSpot.Services.Moderation.WebAPI.Middleware;
@@ -65,7 +66,7 @@ namespace TagTheSpot.Services.Moderation.WebAPI
                 });
             });
 
-            builder.Services.AddScoped<ISubmissionRepository, ISubmissionRepository>();
+            builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
 
             var app = builder.Build();
 
