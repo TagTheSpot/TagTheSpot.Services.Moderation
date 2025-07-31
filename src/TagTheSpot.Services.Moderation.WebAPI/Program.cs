@@ -9,6 +9,7 @@ using TagTheSpot.Services.Moderation.WebAPI.Extensions;
 using TagTheSpot.Services.Moderation.WebAPI.Factories;
 using TagTheSpot.Services.Moderation.WebAPI.Middleware;
 using TagTheSpot.Services.Shared.Messaging.Options;
+using TagTheSpot.Services.Spot.Domain.Submissions;
 
 namespace TagTheSpot.Services.Moderation.WebAPI
 {
@@ -63,6 +64,8 @@ namespace TagTheSpot.Services.Moderation.WebAPI
                     });
                 });
             });
+
+            builder.Services.AddScoped<ISubmissionRepository, ISubmissionRepository>();
 
             var app = builder.Build();
 
