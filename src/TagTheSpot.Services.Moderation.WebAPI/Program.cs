@@ -2,6 +2,7 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TagTheSpot.Services.Moderation.Application.Consumers;
+using TagTheSpot.Services.Moderation.Domain.Users;
 using TagTheSpot.Services.Moderation.Infrastructure.Extensions;
 using TagTheSpot.Services.Moderation.Infrastructure.Options;
 using TagTheSpot.Services.Moderation.Infrastructure.Persistence;
@@ -82,6 +83,7 @@ namespace TagTheSpot.Services.Moderation.WebAPI
             });
 
             builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             var app = builder.Build();
 
