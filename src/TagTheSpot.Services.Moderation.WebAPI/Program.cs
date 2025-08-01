@@ -12,6 +12,7 @@ using TagTheSpot.Services.Moderation.WebAPI.Extensions;
 using TagTheSpot.Services.Moderation.WebAPI.Factories;
 using TagTheSpot.Services.Moderation.WebAPI.Middleware;
 using TagTheSpot.Services.Shared.Messaging.Events.Submissions;
+using TagTheSpot.Services.Shared.Messaging.Events.Users;
 using TagTheSpot.Services.Shared.Messaging.Options;
 using TagTheSpot.Services.Spot.Domain.Submissions;
 
@@ -62,6 +63,7 @@ namespace TagTheSpot.Services.Moderation.WebAPI
             builder.Services.AddMassTransit(cfg =>
             {
                 cfg.AddConsumer<SpotSubmittedEventConsumer>();
+                cfg.AddConsumer<UserCreatedEventConsumer>();
 
                 cfg.UsingRabbitMq((context, config) =>
                 {
@@ -78,6 +80,9 @@ namespace TagTheSpot.Services.Moderation.WebAPI
                     {
                         e.Bind<SpotSubmittedEvent>();
                         e.ConfigureConsumer<SpotSubmittedEventConsumer>(context);
+
+                        e.Bind<UserCreatedEvent>();
+                        e.ConfigureConsumer<UserCreatedEventConsumer>(context);
                     });
                 });
             });
