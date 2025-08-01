@@ -73,6 +73,8 @@ namespace TagTheSpot.Services.Moderation.WebAPI
 
             builder.Services.AddMassTransit(cfg =>
             {
+                cfg.SetKebabCaseEndpointNameFormatter();
+
                 cfg.AddConsumer<SpotSubmittedEventConsumer>();
                 cfg.AddConsumer<UserCreatedEventConsumer>();
 
