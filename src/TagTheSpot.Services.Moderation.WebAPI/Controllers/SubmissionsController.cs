@@ -43,5 +43,17 @@ namespace TagTheSpot.Services.Moderation.WebAPI.Controllers
 
             return result.IsSuccess ? NoContent() : _problemDetailsFactory.GetProblemDetails(result);
         }
+
+        [Authorize(Roles = "Admin,Owner")]
+        [HttpPatch("approve")]
+        public async Task<IActionResult> ApproveSubmission(
+            [FromBody] Guid submissionId,
+            CancellationToken cancellationToken)
+        {
+            var result = await _submissionService
+                .ApproveAsync(submissionId, cancellationToken);
+
+            return result.IsSuccess ? NoContent() : _problemDetailsFactory.GetProblemDetails(result);
+        }
     }
 }
