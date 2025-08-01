@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TagTheSpot.Services.Moderation.Domain.Submissions;
+using TagTheSpot.Services.Moderation.Domain.Users;
 
 namespace TagTheSpot.Services.Moderation.Infrastructure.Persistence
 {
@@ -11,6 +12,8 @@ namespace TagTheSpot.Services.Moderation.Infrastructure.Persistence
         { }
 
         public DbSet<Submission> Submissions { get; init; }
+
+        public DbSet<User> Users { get; init; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
