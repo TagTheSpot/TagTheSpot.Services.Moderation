@@ -1,4 +1,6 @@
 using MassTransit;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TagTheSpot.Services.Moderation.Application.Abstractions.Data;
@@ -20,6 +22,7 @@ using TagTheSpot.Services.Moderation.WebAPI.Middleware;
 using TagTheSpot.Services.Shared.Messaging.Events.Submissions;
 using TagTheSpot.Services.Shared.Messaging.Events.Users;
 using TagTheSpot.Services.Shared.Messaging.Options;
+using TagTheSpot.Services.Moderation.Application.Validators;
 
 namespace TagTheSpot.Services.Moderation.WebAPI
 {
@@ -52,6 +55,9 @@ namespace TagTheSpot.Services.Moderation.WebAPI
                 .BindConfiguration(MessagingSettings.SectionName)
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
+
+            builder.Services.AddValidatorsFromAssemblyContaining<RejectSubmissionRequestValidator>();
+            builder.Services.AddFluentValidationAutoValidation();
 
             builder.Services.ConfigureAuthentication();
             builder.Services.AddHttpContextAccessor();
