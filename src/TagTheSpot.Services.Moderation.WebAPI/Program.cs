@@ -1,6 +1,7 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using TagTheSpot.Services.Moderation.Application.Consumers;
 using TagTheSpot.Services.Moderation.Infrastructure.Extensions;
 using TagTheSpot.Services.Moderation.Infrastructure.Options;
 using TagTheSpot.Services.Moderation.Infrastructure.Persistence;
@@ -9,6 +10,7 @@ using TagTheSpot.Services.Moderation.Infrastructure.Persistence.Repositories;
 using TagTheSpot.Services.Moderation.WebAPI.Extensions;
 using TagTheSpot.Services.Moderation.WebAPI.Factories;
 using TagTheSpot.Services.Moderation.WebAPI.Middleware;
+using TagTheSpot.Services.Shared.Messaging.Events.Submissions;
 using TagTheSpot.Services.Shared.Messaging.Options;
 using TagTheSpot.Services.Spot.Domain.Submissions;
 
@@ -39,6 +41,11 @@ namespace TagTheSpot.Services.Moderation.WebAPI
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
 
+            builder.Services.AddOptions<MessagingSettings>()
+                .BindConfiguration(MessagingSettings.SectionName)
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+
             builder.Services.ConfigureAuthentication();
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddSingleton<ProblemDetailsFactory>();
@@ -53,6 +60,8 @@ namespace TagTheSpot.Services.Moderation.WebAPI
 
             builder.Services.AddMassTransit(cfg =>
             {
+                cfg.AddConsumer<SpotSubmittedEventConsumer>();
+
                 cfg.UsingRabbitMq((context, config) =>
                 {
                     var rabbitMqSettings = context.GetRequiredService<IOptions<RabbitMqSettings>>().Value;
@@ -62,6 +71,12 @@ namespace TagTheSpot.Services.Moderation.WebAPI
                     {
                         h.Username(rabbitMqSettings.Username);
                         h.Password(rabbitMqSettings.Password);
+                    });
+
+                    config.ReceiveEndpoint(messagingSettings.QueueName, e =>
+                    {
+                        e.Bind<SpotSubmittedEvent>();
+                        e.ConfigureConsumer<SpotSubmittedEventConsumer>(context);
                     });
                 });
             });

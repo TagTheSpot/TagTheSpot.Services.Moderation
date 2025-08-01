@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.5.1" />
     <PackageReference Include="TagTheSpot.Services.Shared.Essentials" Version="1.0.3" />
-    <PackageReference Include="TagTheSpot.Services.Shared.Messaging" Version="1.0.3" />
+    <PackageReference Include="TagTheSpot.Services.Shared.Messaging" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>
