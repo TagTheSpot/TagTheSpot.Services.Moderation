@@ -1,4 +1,4 @@
-﻿namespace TagTheSpot.Services.Spot.Domain.Submissions
+﻿namespace TagTheSpot.Services.Moderation.Domain.Submissions
 {
     public enum SubmissionStatus
     {

@@ -1,5 +1,4 @@
 ﻿using TagTheSpot.Services.Moderation.Domain.Spots;
-using TagTheSpot.Services.Spot.Domain.Submissions;
 
 namespace TagTheSpot.Services.Moderation.Domain.Submissions
 {
