@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using TagTheSpot.Services.Moderation.Domain.Spots;
 using TagTheSpot.Services.Moderation.Domain.Submissions;
 using TagTheSpot.Services.Shared.Messaging.Events.Submissions;
-using TagTheSpot.Services.Spot.Domain.Submissions;
 
 namespace TagTheSpot.Services.Moderation.Application.Consumers
 {

@@ -1,5 +1,5 @@
-﻿using TagTheSpot.Services.Moderation.Domain.Submissions;
-using TagTheSpot.Services.Spot.Domain.Submissions;
+﻿using Microsoft.EntityFrameworkCore;
+using TagTheSpot.Services.Moderation.Domain.Submissions;
 
 namespace TagTheSpot.Services.Moderation.Infrastructure.Persistence.Repositories
 {
@@ -12,9 +12,17 @@ namespace TagTheSpot.Services.Moderation.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<IEnumerable<Submission>> GetWithStatusPendingAsync(
+            CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Submissions
+                .Where(sub => sub.Status == SubmissionStatus.Pending)
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task InsertAsync(
             Submission submission, 
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             await _dbContext.Submissions.AddAsync(
                 submission, cancellationToken);
