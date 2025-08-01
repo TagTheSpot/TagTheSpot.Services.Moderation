@@ -9,15 +9,15 @@ namespace TagTheSpot.Services.Moderation.Domain.Submissions
 
         public Guid UserId { get; init; }
 
-        public Guid SpotId { get; init; }
-
         public Guid CityId { get; init; }
+
+        public required string CityName { get; init; }
 
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }
 
-        public SpotType Type { get; set; }
+        public SpotType SpotType { get; set; }
 
         public required string Description { get; set; }
 
