@@ -4,6 +4,9 @@ services:
     build:
       context: .
       dockerfile: TagTheSpot.Services.Moderation.WebAPI/Dockerfile
+    ports:
+      - "8003:8080"
+      - "18003:8081"
 
   tagthespot-services-moderation-database:
     container_name: tagthespot.services.moderation.database
