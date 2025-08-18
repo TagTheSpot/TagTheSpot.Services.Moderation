@@ -107,19 +107,26 @@ namespace TagTheSpot.Services.Moderation.WebAPI
 
             builder.Services.AddScoped<Mapper<Submission, SubmissionResponse>, SubmissionToSubmissionResponseMapper>();
 
+            builder.Services.AddCorsPolicies();
+
             var app = builder.Build();
 
             app.UseExceptionHandlingMiddleware();
 
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseCors(CorsExtensions.DevelopmentPolicyName);
+            }
+            else
+            {
+                app.UseHttpsRedirection();
+                app.UseHsts();
             }
 
-            app.ApplyMigrations();
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
-            app.UseHttpsRedirection();
+            app.ApplyMigrations();
 
             app.UseAuthentication();
             app.UseAuthorization();
