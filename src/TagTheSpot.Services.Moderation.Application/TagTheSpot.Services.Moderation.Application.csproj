@@ -10,7 +10,7 @@
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="MassTransit" Version="8.5.1" />
     <PackageReference Include="TagTheSpot.Services.Shared.Essentials" Version="1.0.4" />
-    <PackageReference Include="TagTheSpot.Services.Shared.Messaging" Version="1.0.4" />
+    <PackageReference Include="TagTheSpot.Services.Shared.Messaging" Version="1.0.18" />
   </ItemGroup>
 
   <ItemGroup>

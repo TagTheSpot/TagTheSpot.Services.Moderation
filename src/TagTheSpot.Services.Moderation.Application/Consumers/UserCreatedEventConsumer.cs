@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 using TagTheSpot.Services.Moderation.Domain.Users;
-using TagTheSpot.Services.Shared.Messaging.Events.Users;
+using TagTheSpot.Services.Shared.Messaging.Users;
 
 namespace TagTheSpot.Services.Moderation.Application.Consumers
 {
