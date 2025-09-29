@@ -4,6 +4,10 @@
     {
         Task InsertAsync(
             User user, 
-            CancellationToken cancellationToken);
+            CancellationToken cancellationToken = default);
+
+        Task<User?> GetByIdAsync(
+            Guid id,
+            CancellationToken cancellationToken = default);
     }
 }

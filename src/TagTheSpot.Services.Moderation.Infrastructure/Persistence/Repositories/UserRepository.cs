@@ -11,6 +11,15 @@ namespace TagTheSpot.Services.Moderation.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<User?> GetByIdAsync(
+            Guid id, 
+            CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Users.FindAsync(
+                keyValues: [id],
+                cancellationToken: cancellationToken);
+        }
+
         public async Task InsertAsync(
             User user,
             CancellationToken cancellationToken)

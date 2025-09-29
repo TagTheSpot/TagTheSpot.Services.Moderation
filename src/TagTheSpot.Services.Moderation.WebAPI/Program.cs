@@ -1,28 +1,29 @@
-using MassTransit;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TagTheSpot.Services.Moderation.Application.Abstractions.Data;
+using TagTheSpot.Services.Moderation.Application.Abstractions.Generators;
 using TagTheSpot.Services.Moderation.Application.Abstractions.Services;
 using TagTheSpot.Services.Moderation.Application.Consumers;
 using TagTheSpot.Services.Moderation.Application.DTO.UseCases;
 using TagTheSpot.Services.Moderation.Application.Mappers;
 using TagTheSpot.Services.Moderation.Application.Services;
+using TagTheSpot.Services.Moderation.Application.Validators;
 using TagTheSpot.Services.Moderation.Domain.Submissions;
 using TagTheSpot.Services.Moderation.Domain.Users;
 using TagTheSpot.Services.Moderation.Infrastructure.Extensions;
 using TagTheSpot.Services.Moderation.Infrastructure.Options;
 using TagTheSpot.Services.Moderation.Infrastructure.Persistence;
-using TagTheSpot.Services.Moderation.Infrastructure.Persistence.Options;
 using TagTheSpot.Services.Moderation.Infrastructure.Persistence.Repositories;
+using TagTheSpot.Services.Moderation.Infrastructure.Services;
 using TagTheSpot.Services.Moderation.WebAPI.Extensions;
 using TagTheSpot.Services.Moderation.WebAPI.Factories;
 using TagTheSpot.Services.Moderation.WebAPI.Middleware;
-using TagTheSpot.Services.Shared.Messaging.Events.Submissions;
-using TagTheSpot.Services.Shared.Messaging.Events.Users;
-using TagTheSpot.Services.Shared.Messaging.Options;
-using TagTheSpot.Services.Moderation.Application.Validators;
+using TagTheSpot.Services.Shared.Infrastructure.Options;
+using TagTheSpot.Services.Shared.Messaging.Submissions;
+using TagTheSpot.Services.Shared.Messaging.Users;
 
 namespace TagTheSpot.Services.Moderation.WebAPI
 {
@@ -53,6 +54,11 @@ namespace TagTheSpot.Services.Moderation.WebAPI
 
             builder.Services.AddOptions<MessagingSettings>()
                 .BindConfiguration(MessagingSettings.SectionName)
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+
+            builder.Services.AddOptions<LinkGeneratorSettings>()
+                .BindConfiguration(LinkGeneratorSettings.SectionName)
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
 
@@ -104,6 +110,8 @@ namespace TagTheSpot.Services.Moderation.WebAPI
             builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            builder.Services.AddScoped<ISubmissionLinkGenerator, SubmissionLinkGenerator>();
 
             builder.Services.AddScoped<Mapper<Submission, SubmissionResponse>, SubmissionToSubmissionResponseMapper>();
 
