@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TagTheSpot.Services.Shared.Abstractions.Options;
 
 namespace TagTheSpot.Services.Moderation.Infrastructure.Options
 {
-    public sealed class LinkGeneratorSettings
+    public sealed class LinkGeneratorSettings : IAppOptions
     {
-        public const string SectionName = nameof(LinkGeneratorSettings);
+        public static string SectionName => nameof(LinkGeneratorSettings);
 
         [Required]
         [Url]

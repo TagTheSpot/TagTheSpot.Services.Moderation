@@ -1,10 +1,10 @@
 ﻿using MassTransit;
-using TagTheSpot.Services.Moderation.Application.Abstractions.Data;
 using TagTheSpot.Services.Moderation.Application.Abstractions.Generators;
 using TagTheSpot.Services.Moderation.Application.Abstractions.Services;
 using TagTheSpot.Services.Moderation.Application.DTO.UseCases;
 using TagTheSpot.Services.Moderation.Domain.Submissions;
 using TagTheSpot.Services.Moderation.Domain.Users;
+using TagTheSpot.Services.Shared.Abstractions.Mappers;
 using TagTheSpot.Services.Shared.Essentials.Results;
 using TagTheSpot.Services.Shared.Messaging.Submissions;
 

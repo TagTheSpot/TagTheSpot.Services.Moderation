@@ -1,6 +1,6 @@
-﻿using TagTheSpot.Services.Moderation.Application.Abstractions.Data;
-using TagTheSpot.Services.Moderation.Application.DTO.UseCases;
+﻿using TagTheSpot.Services.Moderation.Application.DTO.UseCases;
 using TagTheSpot.Services.Moderation.Domain.Submissions;
+using TagTheSpot.Services.Shared.Abstractions.Mappers;
 
 namespace TagTheSpot.Services.Moderation.Application.Mappers
 {

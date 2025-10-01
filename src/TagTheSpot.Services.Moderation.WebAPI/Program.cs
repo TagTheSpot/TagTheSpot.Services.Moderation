@@ -3,11 +3,10 @@ using FluentValidation.AspNetCore;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using TagTheSpot.Services.Moderation.Application.Abstractions.Data;
+using System.Reflection;
 using TagTheSpot.Services.Moderation.Application.Abstractions.Generators;
 using TagTheSpot.Services.Moderation.Application.Abstractions.Services;
 using TagTheSpot.Services.Moderation.Application.Consumers;
-using TagTheSpot.Services.Moderation.Application.DTO.UseCases;
 using TagTheSpot.Services.Moderation.Application.Mappers;
 using TagTheSpot.Services.Moderation.Application.Services;
 using TagTheSpot.Services.Moderation.Application.Validators;
@@ -18,9 +17,12 @@ using TagTheSpot.Services.Moderation.Infrastructure.Options;
 using TagTheSpot.Services.Moderation.Infrastructure.Persistence;
 using TagTheSpot.Services.Moderation.Infrastructure.Persistence.Repositories;
 using TagTheSpot.Services.Moderation.Infrastructure.Services;
-using TagTheSpot.Services.Moderation.WebAPI.Extensions;
-using TagTheSpot.Services.Moderation.WebAPI.Factories;
-using TagTheSpot.Services.Moderation.WebAPI.Middleware;
+using TagTheSpot.Services.Shared.API.DependencyInjection;
+using TagTheSpot.Services.Shared.API.Factories;
+using TagTheSpot.Services.Shared.API.Middleware;
+using TagTheSpot.Services.Shared.Application.Extensions;
+using TagTheSpot.Services.Shared.Auth.DependencyInjection;
+using TagTheSpot.Services.Shared.Auth.Options;
 using TagTheSpot.Services.Shared.Infrastructure.Options;
 using TagTheSpot.Services.Shared.Messaging.Submissions;
 using TagTheSpot.Services.Shared.Messaging.Users;
@@ -35,32 +37,17 @@ namespace TagTheSpot.Services.Moderation.WebAPI
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.ConfigureSwaggerGen();
 
-            builder.Services.AddOptions<DbSettings>()
-                .BindConfiguration(DbSettings.SectionName)
-                .ValidateDataAnnotations()
-                .ValidateOnStart();
+            var swaggerXmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var swaggerXmlFilePath = Path.Combine(AppContext.BaseDirectory, swaggerXmlFileName);
 
-            builder.Services.AddOptions<RabbitMqSettings>()
-                .BindConfiguration(RabbitMqSettings.SectionName)
-                .ValidateDataAnnotations()
-                .ValidateOnStart();
+            builder.Services.ConfigureSwaggerGen(swaggerXmlFilePath);
 
-            builder.Services.AddOptions<JwtSettings>()
-                .BindConfiguration(JwtSettings.SectionName)
-                .ValidateDataAnnotations()
-                .ValidateOnStart();
-
-            builder.Services.AddOptions<MessagingSettings>()
-                .BindConfiguration(MessagingSettings.SectionName)
-                .ValidateDataAnnotations()
-                .ValidateOnStart();
-
-            builder.Services.AddOptions<LinkGeneratorSettings>()
-                .BindConfiguration(LinkGeneratorSettings.SectionName)
-                .ValidateDataAnnotations()
-                .ValidateOnStart();
+            builder.Services.ConfigureValidatableOnStartOptions<RabbitMqSettings>();
+            builder.Services.ConfigureValidatableOnStartOptions<JwtSettings>();
+            builder.Services.ConfigureValidatableOnStartOptions<DbSettings>();
+            builder.Services.ConfigureValidatableOnStartOptions<MessagingSettings>();
+            builder.Services.ConfigureValidatableOnStartOptions<LinkGeneratorSettings>();
 
             builder.Services.AddValidatorsFromAssemblyContaining<RejectSubmissionRequestValidator>();
             builder.Services.AddFluentValidationAutoValidation();
@@ -113,9 +100,9 @@ namespace TagTheSpot.Services.Moderation.WebAPI
 
             builder.Services.AddScoped<ISubmissionLinkGenerator, SubmissionLinkGenerator>();
 
-            builder.Services.AddScoped<Mapper<Submission, SubmissionResponse>, SubmissionToSubmissionResponseMapper>();
+            builder.Services.AddMappersFromAssembly(typeof(SubmissionToSubmissionResponseMapper).Assembly);
 
-            builder.Services.AddCorsPolicies();
+            builder.Services.AddDevelopmentCorsPolicy();
 
             var app = builder.Build();
 
@@ -127,19 +114,19 @@ namespace TagTheSpot.Services.Moderation.WebAPI
             }
             else
             {
-                app.UseHttpsRedirection();
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            app.ApplyMigrations();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.ApplyMigrations();
 
             app.Run();
         }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TagTheSpot.Services.Moderation.Application.Abstractions.Services;
 using TagTheSpot.Services.Moderation.Application.DTO.UseCases;
-using TagTheSpot.Services.Moderation.WebAPI.Factories;
+using TagTheSpot.Services.Shared.API.Factories;
 
 namespace TagTheSpot.Services.Moderation.WebAPI.Controllers
 {
@@ -14,7 +14,7 @@ namespace TagTheSpot.Services.Moderation.WebAPI.Controllers
         private readonly ProblemDetailsFactory _problemDetailsFactory;
 
         public SubmissionsController(
-            ISubmissionService submissionService, 
+            ISubmissionService submissionService,
             ProblemDetailsFactory problemDetailsFactory)
         {
             _submissionService = submissionService;
